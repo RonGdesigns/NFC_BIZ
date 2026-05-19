@@ -5,13 +5,13 @@ import { getStorage } from "firebase/storage";
 
 // TODO: Replace this with your own Firebase project configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCa6y0fY55otUDTTMrhxTZmaVlnjCq6itA",
-  authDomain: "nfc-biz-card-9cb6c.firebaseapp.com",
-  projectId: "nfc-biz-card-9cb6c",
-  storageBucket: "nfc-biz-card-9cb6c.firebasestorage.app",
-  messagingSenderId: "159524115324",
-  appId: "1:159524115324:web:3ff53c51d0d37e075f8af9",
-  measurementId: "G-XP5XSKN9WM"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
