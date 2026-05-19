@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 export default function Auth() {
@@ -10,6 +10,19 @@ export default function Auth() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Handle successful redirect from Google Auth
+  useEffect(() => {
+    getRedirectResult(auth).then((result) => {
+      if (result) {
+        navigate('/dashboard');
+      }
+    }).catch((err) => {
+      if (err.message && !err.message.includes("auth/redirect-cancelled")) {
+        setError(err.message);
+      }
+    });
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,11 +47,9 @@ export default function Auth() {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      navigate('/dashboard');
+      await signInWithRedirect(auth, provider);
     } catch (err) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   };
