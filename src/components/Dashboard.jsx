@@ -95,7 +95,7 @@ export default function Dashboard() {
   if (viewMode === 'grid') {
     return (
       <div className="editorial-grid">
-        <div style={{ padding: '80px 40px', backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)', display: 'flex', flexDirection: 'column' }}>
+        <div className="panel-left" style={{ backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1 }}>
             <h1 style={{ color: 'var(--bg-color)' }}>Command<br/>Center.</h1>
             <p style={{ marginTop: '40px', opacity: 0.8 }}>
@@ -110,7 +110,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        <div style={{ padding: '80px 10%', display: 'flex', flexDirection: 'column' }}>
+        <div className="panel-right" style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
             <h2 style={{ fontSize: '32px' }}>Your Identities</h2>
             <button onClick={() => { setFormData(emptyForm); setViewMode('edit'); }}>
@@ -180,7 +180,7 @@ export default function Dashboard() {
   // -------------------------
   return (
     <div className="editorial-grid">
-      <div style={{ padding: '80px 40px', backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)', display: 'flex', flexDirection: 'column' }}>
+      <div className="panel-left" style={{ backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)', display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1 }}>
           <h1 style={{ color: 'var(--bg-color)' }}>Forge.<br/>Identity.</h1>
           <p style={{ marginTop: '40px', opacity: 0.8 }}>
@@ -195,7 +195,7 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div style={{ padding: '80px 10%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div className="panel-right" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <div className="organic-card">
           <h2 style={{ marginBottom: '40px' }}>Configuration</h2>
           

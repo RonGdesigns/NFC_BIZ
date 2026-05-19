@@ -90,3 +90,84 @@ input:focus {
   padding: 40px;
   box-shadow: 12px 12px 40px rgba(0,0,0,0.08), -4px -4px 20px rgba(255,255,255,0.4); /* Organic shadows */
 }
+
+/* Responsive Grid for Profile Page */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.profile-image-col {
+  grid-column: 1 / 6;
+}
+
+.profile-text-col {
+  grid-column: 7 / 12;
+  padding-left: 4vw;
+}
+
+/* General Layout Padding */
+.panel-left {
+  padding: 80px 40px;
+}
+
+.panel-right {
+  padding: 80px 10%;
+}
+
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-right {
+  text-align: right;
+}
+
+.button-group {
+  display: flex;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .profile-image-col {
+    grid-column: 1 / -1;
+  }
+  .profile-text-col {
+    grid-column: 1 / -1;
+    padding-left: 0;
+  }
+  .panel-left {
+    padding: 40px 20px;
+  }
+  .panel-right {
+    padding: 40px 20px;
+  }
+  .header-flex {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .header-right {
+    text-align: left;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+  }
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .button-group button {
+    width: 100%;
+  }
+  .organic-card {
+    padding: 24px;
+  }
+}

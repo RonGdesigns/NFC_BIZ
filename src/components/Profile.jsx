@@ -36,10 +36,7 @@ export default function Profile() {
     <div style={{ minHeight: '100vh', padding: '5vw' }}>
       
       {/* Magazine Style Header */}
-      <header style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'flex-start',
+      <header className="header-flex" style={{ 
         borderBottom: '4px solid var(--text-primary)',
         paddingBottom: '24px',
         marginBottom: '64px'
@@ -50,7 +47,7 @@ export default function Profile() {
           </p>
           <h1 style={{ marginTop: '16px' }}>{profileData.fullName}</h1>
         </div>
-        <div style={{ textAlign: 'right' }}>
+        <div className="header-right">
           <p style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '24px', margin: 0 }}>
             {profileData.title}
           </p>
@@ -61,16 +58,10 @@ export default function Profile() {
       </header>
 
       {/* Asymmetrical Content Grid */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(12, 1fr)', 
-        gap: '24px',
-        alignItems: 'center'
-      }}>
+      <div className="profile-grid">
         
         {/* Left Col: High-grain style image frame */}
-        <div style={{ 
-          gridColumn: '1 / 6', 
+        <div className="profile-image-col" style={{ 
           position: 'relative',
           paddingBottom: '120%', /* Aspect ratio hack */
           overflow: 'hidden',
@@ -92,7 +83,7 @@ export default function Profile() {
         </div>
 
         {/* Right Col: Bio and Actions */}
-        <div style={{ gridColumn: '7 / 12', paddingLeft: '4vw' }}>
+        <div className="profile-text-col">
           <h2 style={{ fontSize: '48px', marginBottom: '32px' }}>The<br/>Manifesto.</h2>
           <p style={{ fontSize: '18px', fontWeight: '500', maxWidth: '400px', marginBottom: '40px' }}>
             {profileData.bio}
@@ -130,7 +121,7 @@ export default function Profile() {
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '16px', marginTop: '48px' }}>
+          <div className="button-group" style={{ marginTop: '48px' }}>
             <button onClick={() => {
               const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${profileData.fullName || ''}\nORG:${profileData.company || ''}\nTITLE:${profileData.title || ''}\nTEL;TYPE=CELL:${profileData.phone || ''}\nEMAIL;TYPE=WORK:${profileData.email || ''}\nURL:${profileData.website || ''}\nNOTE:${profileData.bio || ''}\nEND:VCARD`;
               const blob = new Blob([vCardData], { type: 'text/vcard' });
