@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 export default function Auth() {
@@ -21,6 +21,20 @@ export default function Auth() {
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
       }
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setLoading(true);
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);
@@ -65,6 +79,21 @@ export default function Auth() {
             {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
           </button>
         </form>
+
+        <div style={{ display: 'flex', alignItems: 'center', margin: '24px 0' }}>
+          <div style={{ flex: 1, borderBottom: '1px solid var(--text-primary)', opacity: 0.2 }}></div>
+          <span style={{ padding: '0 16px', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>Or</span>
+          <div style={{ flex: 1, borderBottom: '1px solid var(--text-primary)', opacity: 0.2 }}></div>
+        </div>
+
+        <button 
+          type="button" 
+          onClick={handleGoogleSignIn} 
+          disabled={loading}
+          style={{ width: '100%', backgroundColor: 'transparent', color: 'var(--text-primary)', border: '2px solid var(--text-primary)' }}
+        >
+          Continue with Google
+        </button>
 
         <p 
           style={{ marginTop: '24px', fontSize: '14px', textAlign: 'center', cursor: 'pointer', textDecoration: 'underline', fontWeight: 'bold' }} 
