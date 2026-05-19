@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     fullName: '',
@@ -24,7 +26,8 @@ export default function Dashboard() {
         bio: formData.bio,
         updatedAt: new Date().toISOString()
       });
-      alert('Profile successfully deployed to the database!');
+      alert('Profile successfully deployed to the database! Redirecting to your public URL...');
+      navigate(`/${formData.username.toLowerCase()}`);
     } catch (error) {
       console.error("Error saving document: ", error);
       alert('Error saving profile. Check console.');
