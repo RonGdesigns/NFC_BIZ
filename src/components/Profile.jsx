@@ -105,6 +105,31 @@ export default function Profile() {
             {profileData.website && <p style={{ margin: '8px 0' }}><strong>W /</strong> <a href={profileData.website} target="_blank" rel="noreferrer" style={{ color: 'var(--text-primary)' }}>{profileData.website}</a></p>}
           </div>
 
+          {(profileData.instagram || profileData.linkedin || profileData.twitter || profileData.tiktok) && (
+            <div style={{ borderTop: '2px solid var(--text-primary)', paddingTop: '24px', marginTop: '24px', maxWidth: '400px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {profileData.instagram && (
+                <a href={`https://instagram.com/${profileData.instagram.replace('@', '')}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '8px 12px', border: '1px solid var(--text-primary)', color: 'var(--text-primary)', textDecoration: 'none', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Instagram
+                </a>
+              )}
+              {profileData.linkedin && (
+                <a href={profileData.linkedin.startsWith('http') ? profileData.linkedin : `https://${profileData.linkedin}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '8px 12px', border: '1px solid var(--text-primary)', color: 'var(--text-primary)', textDecoration: 'none', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  LinkedIn
+                </a>
+              )}
+              {profileData.twitter && (
+                <a href={`https://twitter.com/${profileData.twitter.replace('@', '')}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '8px 12px', border: '1px solid var(--text-primary)', color: 'var(--text-primary)', textDecoration: 'none', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  X / Twitter
+                </a>
+              )}
+              {profileData.tiktok && (
+                <a href={`https://tiktok.com/@${profileData.tiktok.replace('@', '')}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '8px 12px', border: '1px solid var(--text-primary)', color: 'var(--text-primary)', textDecoration: 'none', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  TikTok
+                </a>
+              )}
+            </div>
+          )}
+
           <div style={{ display: 'flex', gap: '16px', marginTop: '48px' }}>
             <button onClick={() => {
               const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${profileData.fullName || ''}\nORG:${profileData.company || ''}\nTITLE:${profileData.title || ''}\nTEL;TYPE=CELL:${profileData.phone || ''}\nEMAIL;TYPE=WORK:${profileData.email || ''}\nURL:${profileData.website || ''}\nNOTE:${profileData.bio || ''}\nEND:VCARD`;

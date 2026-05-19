@@ -14,6 +14,10 @@ const emptyForm = {
   phone: '',
   email: '',
   website: '',
+  instagram: '',
+  linkedin: '',
+  twitter: '',
+  tiktok: '',
   imageUrl: ''
 };
 
@@ -69,6 +73,10 @@ export default function Dashboard() {
         phone: formData.phone,
         email: formData.email,
         website: formData.website,
+        instagram: formData.instagram,
+        linkedin: formData.linkedin,
+        twitter: formData.twitter,
+        tiktok: formData.tiktok,
         imageUrl: imageUrl,
         ownerId: auth.currentUser.uid, // Tie the card to the authenticated user!
         updatedAt: new Date().toISOString()
@@ -210,6 +218,25 @@ export default function Dashboard() {
             <div>
               <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>Website</label>
               <input type="url" name="website" placeholder="https://irondigital.mi" value={formData.website} onChange={handleChange} />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>Instagram</label>
+                <input type="text" name="instagram" placeholder="@username" value={formData.instagram} onChange={handleChange} />
+              </div>
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>LinkedIn</label>
+                <input type="url" name="linkedin" placeholder="linkedin.com/in/..." value={formData.linkedin} onChange={handleChange} />
+              </div>
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>X (Twitter)</label>
+                <input type="text" name="twitter" placeholder="@username" value={formData.twitter} onChange={handleChange} />
+              </div>
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>TikTok</label>
+                <input type="text" name="tiktok" placeholder="@username" value={formData.tiktok} onChange={handleChange} />
+              </div>
             </div>
 
             <div>
