@@ -96,7 +96,18 @@ export default function Profile() {
           </p>
 
           <div style={{ display: 'flex', gap: '16px', marginTop: '48px' }}>
-            <button onClick={() => alert('Save vCard logic goes here')}>
+            <button onClick={() => {
+              const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${profileData.fullName}\nORG:${profileData.title}\nNOTE:${profileData.bio}\nEND:VCARD`;
+              const blob = new Blob([vCardData], { type: 'text/vcard' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${profileData.fullName.replace(/\s+/g, '_')}.vcf`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }}>
               Save Contact
             </button>
             <button style={{ backgroundColor: 'transparent', color: 'var(--text-primary)', border: '2px solid var(--text-primary)' }}>

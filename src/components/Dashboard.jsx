@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
@@ -11,6 +12,8 @@ export default function Dashboard() {
     title: '',
     bio: ''
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,12 +21,21 @@ export default function Dashboard() {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    setIsUploading(true);
     try {
+      let imageUrl = "";
+      if (imageFile) {
+        const imageRef = ref(storage, `profile_images/${formData.username.toLowerCase()}_${Date.now()}`);
+        const snapshot = await uploadBytes(imageRef, imageFile);
+        imageUrl = await getDownloadURL(snapshot.ref);
+      }
+
       await setDoc(doc(db, 'users', formData.username.toLowerCase()), {
         username: formData.username.toLowerCase(),
         fullName: formData.fullName,
         title: formData.title,
         bio: formData.bio,
+        imageUrl: imageUrl,
         updatedAt: new Date().toISOString()
       });
       alert('Profile successfully deployed to the database! Redirecting to your public URL...');
@@ -31,6 +43,8 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error saving document: ", error);
       alert('Error saving profile. Check console.');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -107,8 +121,20 @@ export default function Dashboard() {
               />
             </div>
 
-            <button type="submit" style={{ alignSelf: 'flex-start', marginTop: '16px' }}>
-              Engage Profile
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                Profile Image
+              </label>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files[0])}
+                style={{ border: 'none', marginTop: '8px' }}
+              />
+            </div>
+
+            <button type="submit" disabled={isUploading} style={{ alignSelf: 'flex-start', marginTop: '16px' }}>
+              {isUploading ? 'Uploading...' : 'Engage Profile'}
             </button>
           </form>
         </div>
