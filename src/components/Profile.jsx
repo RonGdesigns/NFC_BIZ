@@ -54,6 +54,9 @@ export default function Profile() {
           <p style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '24px', margin: 0 }}>
             {profileData.title}
           </p>
+          <p style={{ fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px', marginTop: '8px' }}>
+            {profileData.company}
+          </p>
         </div>
       </header>
 
@@ -91,13 +94,20 @@ export default function Profile() {
         {/* Right Col: Bio and Actions */}
         <div style={{ gridColumn: '7 / 12', paddingLeft: '4vw' }}>
           <h2 style={{ fontSize: '48px', marginBottom: '32px' }}>The<br/>Manifesto.</h2>
-          <p style={{ fontSize: '18px', fontWeight: '500', maxWidth: '400px' }}>
+          <p style={{ fontSize: '18px', fontWeight: '500', maxWidth: '400px', marginBottom: '40px' }}>
             {profileData.bio}
           </p>
 
+          <div style={{ borderTop: '2px solid var(--text-primary)', paddingTop: '24px', maxWidth: '400px' }}>
+            <p style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '16px' }}>Direct Coordinates</p>
+            {profileData.phone && <p style={{ margin: '8px 0' }}><strong>P /</strong> {profileData.phone}</p>}
+            {profileData.email && <p style={{ margin: '8px 0' }}><strong>E /</strong> {profileData.email}</p>}
+            {profileData.website && <p style={{ margin: '8px 0' }}><strong>W /</strong> <a href={profileData.website} target="_blank" rel="noreferrer" style={{ color: 'var(--text-primary)' }}>{profileData.website}</a></p>}
+          </div>
+
           <div style={{ display: 'flex', gap: '16px', marginTop: '48px' }}>
             <button onClick={() => {
-              const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${profileData.fullName}\nORG:${profileData.title}\nNOTE:${profileData.bio}\nEND:VCARD`;
+              const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${profileData.fullName || ''}\nORG:${profileData.company || ''}\nTITLE:${profileData.title || ''}\nTEL;TYPE=CELL:${profileData.phone || ''}\nEMAIL;TYPE=WORK:${profileData.email || ''}\nURL:${profileData.website || ''}\nNOTE:${profileData.bio || ''}\nEND:VCARD`;
               const blob = new Blob([vCardData], { type: 'text/vcard' });
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');

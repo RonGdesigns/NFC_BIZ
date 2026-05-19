@@ -10,13 +10,21 @@ export default function Dashboard() {
     username: '',
     fullName: '',
     title: '',
-    bio: ''
+    bio: '',
+    company: '',
+    phone: '',
+    email: '',
+    website: ''
   });
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (e.target.name === 'username') {
+      value = value.replace(/\s+/g, '').toLowerCase(); // Strips spaces immediately
+    }
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleSave = async (e) => {
@@ -35,6 +43,10 @@ export default function Dashboard() {
         fullName: formData.fullName,
         title: formData.title,
         bio: formData.bio,
+        company: formData.company,
+        phone: formData.phone,
+        email: formData.email,
+        website: formData.website,
         imageUrl: imageUrl,
         updatedAt: new Date().toISOString()
       });
@@ -119,6 +131,34 @@ export default function Dashboard() {
                 onChange={handleChange}
                 style={{ resize: 'vertical' }}
               />
+            </div>
+
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                Company Name
+              </label>
+              <input type="text" name="company" placeholder="Iron Digital" value={formData.company} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                Phone Number
+              </label>
+              <input type="tel" name="phone" placeholder="+1 (555) 123-4567" value={formData.phone} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                Email Address
+              </label>
+              <input type="email" name="email" placeholder="hello@irondigital.mi" value={formData.email} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                Website
+              </label>
+              <input type="url" name="website" placeholder="https://irondigital.mi" value={formData.website} onChange={handleChange} />
             </div>
 
             <div>
