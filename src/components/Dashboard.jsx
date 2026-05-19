@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { db, storage } from '../firebase';
+import { db, storage, auth } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
@@ -63,12 +64,20 @@ export default function Dashboard() {
   return (
     <div className="editorial-grid">
       {/* Left Column: Asymmetrical Typography Area */}
-      <div style={{ padding: '80px 40px', backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)' }}>
-        <h1 style={{ color: 'var(--bg-color)' }}>Digital.<br/>Identity.</h1>
-        <p style={{ marginTop: '40px', opacity: 0.8 }}>
-          Forget the generic gloss. Craft an identity that cuts through the noise. 
-          Your NFC card points here. Set the coordinates.
-        </p>
+      <div style={{ padding: '80px 40px', backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1 }}>
+          <h1 style={{ color: 'var(--bg-color)' }}>Digital.<br/>Identity.</h1>
+          <p style={{ marginTop: '40px', opacity: 0.8 }}>
+            Forget the generic gloss. Craft an identity that cuts through the noise. 
+            Your NFC card points here. Set the coordinates.
+          </p>
+        </div>
+        <button 
+          onClick={() => signOut(auth)} 
+          style={{ alignSelf: 'flex-start', marginTop: '40px', backgroundColor: 'transparent', color: 'var(--bg-color)', border: '2px solid var(--bg-color)', fontSize: '12px', padding: '8px 16px' }}
+        >
+          Sign Out
+        </button>
       </div>
 
       {/* Right Column: The Form */}
