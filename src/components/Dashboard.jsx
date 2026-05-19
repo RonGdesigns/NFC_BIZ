@@ -51,32 +51,28 @@ export default function Dashboard() {
       value = value.replace(/\s+/g, '').toLowerCase(); // Strips spaces immediately
     }
     setFormData({ ...formData, [e.target.name]: value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
     setIsUploading(true);
     try {
+      let finalUsername = formData.username;
+      if (!finalUsername) {
+        finalUsername = Math.random().toString(36).substring(2, 8); // Auto-generate 6-character slug
+      }
+
       let imageUrl = formData.imageUrl;
       if (imageFile) {
-        const imageRef = ref(storage, `profile_images/${formData.username.toLowerCase()}_${Date.now()}`);
+        const imageRef = ref(storage, `profile_images/${finalUsername}_${Date.now()}`);
         const snapshot = await uploadBytes(imageRef, imageFile);
         imageUrl = await getDownloadURL(snapshot.ref);
       }
 
-      await setDoc(doc(db, 'users', formData.username.toLowerCase()), {
-        username: formData.username.toLowerCase(),
-        fullName: formData.fullName,
-        title: formData.title,
-        bio: formData.bio,
-        company: formData.company,
-        phone: formData.phone,
-        email: formData.email,
-        website: formData.website,
-        instagram: formData.instagram,
-        linkedin: formData.linkedin,
-        twitter: formData.twitter,
-        tiktok: formData.tiktok,
+      await setDoc(doc(db, 'users', finalUsername), {
+        ...formData,
+        username: finalUsername,
         imageUrl: imageUrl,
         ownerId: auth.currentUser.uid, // Tie the card to the authenticated user!
         updatedAt: new Date().toISOString()
@@ -132,16 +128,43 @@ export default function Dashboard() {
               {cards.map(card => (
                 <div 
                   key={card.id} 
-                  onClick={() => { setFormData(card); setViewMode('edit'); }}
                   className="organic-card" 
-                  style={{ cursor: 'pointer', transition: 'transform 0.2s ease', padding: '24px' }}
+                  style={{ transition: 'transform 0.2s ease', padding: '24px', position: 'relative' }}
                   onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
                   onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                 >
                   <h3 style={{ fontSize: '24px', margin: '0 0 8px 0' }}>{card.fullName}</h3>
                   <p style={{ fontSize: '14px', fontStyle: 'italic', opacity: 0.8, margin: 0 }}>{card.title}</p>
-                  <div style={{ marginTop: '24px', borderTop: '1px solid var(--text-primary)', paddingTop: '16px' }}>
-                    <p style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '1px', margin: 0 }}>/{card.username}</p>
+                  
+                  <div style={{ marginTop: '24px', borderTop: '1px solid var(--text-primary)', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    
+                    {/* View Live Profile */}
+                    <a href={`/${card.username}`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      🔗 View Live Link
+                    </a>
+
+                    {/* Edit Button */}
+                    <button 
+                      onClick={() => { setFormData(card); setViewMode('edit'); }}
+                      style={{ backgroundColor: 'transparent', color: 'var(--text-primary)', border: '1px solid var(--text-primary)', padding: '4px 8px', fontSize: '12px', width: 'fit-content' }}
+                    >
+                      Edit Details
+                    </button>
+                    
+                    <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', margin: '8px 0 0 0' }}>Write to NFC Chip:</p>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button onClick={() => {
+                        window.location.href = `intent://configure?mode=url&url=${encodeURIComponent(`https://nfcbiz.rgdevelops.com/${card.username}`)}#Intent;scheme=nfcbiz;package=com.example.nfccardemulator;end`;
+                      }} style={{ flex: 1, backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)', fontSize: '10px', padding: '6px' }}>
+                        🔗 As Link
+                      </button>
+                      <button onClick={() => {
+                        const intentUrl = `intent://configure?mode=vcard&name=${encodeURIComponent(card.fullName || '')}&company=${encodeURIComponent(card.company || '')}&phone=${encodeURIComponent(card.phone || '')}&email=${encodeURIComponent(card.email || '')}#Intent;scheme=nfcbiz;package=com.example.nfccardemulator;end`;
+                        window.location.href = intentUrl;
+                      }} style={{ flex: 1, backgroundColor: 'var(--text-primary)', color: 'var(--bg-color)', fontSize: '10px', padding: '6px' }}>
+                        👤 As Contact
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -177,14 +200,7 @@ export default function Dashboard() {
           <h2 style={{ marginBottom: '40px' }}>Configuration</h2>
           
           <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-            <div>
-              <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>
-                Unique Username
-              </label>
-              <input type="text" name="username" placeholder="e.g. johndoe" value={formData.username} onChange={handleChange} required />
-              <p style={{ fontSize: '10px', marginTop: '8px', opacity: 0.6 }}>This will be your URL: nfcbiz.rgdevelops.com/{formData.username}</p>
-            </div>
-
+            {/* Username input removed for auto-generation */}
             <div>
               <label style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px' }}>Display Name</label>
               <input type="text" name="fullName" placeholder="John Doe" value={formData.fullName} onChange={handleChange} required />
